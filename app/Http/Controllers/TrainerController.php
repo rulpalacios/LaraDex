@@ -4,6 +4,7 @@ namespace LaraDex\Http\Controllers;
 
 use LaraDex\Trainer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TrainerController extends Controller
 {
@@ -37,15 +38,16 @@ class TrainerController extends Controller
      */
     public function store(Request $request)
     {
+        $trainer = new Trainer();
 
         if($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $name = time().$file->getClientOriginalName();
+            $trainer->avatar = $name;
             $file->move(public_path().'/images/', $name);
         }
-        $trainer = new Trainer();
         $trainer->name = $request->input('name');
-        $trainer->avatar = $name;
+        $trainer->slug = $request->input('slug');
         $trainer->save();
 
         return 'Saved';
@@ -68,9 +70,9 @@ class TrainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Trainer $trainer)
     {
-        //
+        return view('trainers.edit', compact('trainer'));
     }
 
     /**
@@ -80,9 +82,18 @@ class TrainerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Trainer $trainer)
     {
-        //
+        $trainer->fill($request->except('avatar'));
+         if($request->hasFile('avatar')){
+            $file = $request->file('avatar');
+            $name = time().$file->getClientOriginalName();
+            $trainer->avatar = $name;
+            $file->move(public_path().'/images/', $name);
+        }
+        $trainer->save();
+
+        return 'updated';
     }
 
     /**
