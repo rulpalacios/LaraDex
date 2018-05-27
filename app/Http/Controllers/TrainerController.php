@@ -5,6 +5,7 @@ namespace LaraDex\Http\Controllers;
 use LaraDex\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use LaraDex\Http\Requests\StoreTrainerRequest;
 
 class TrainerController extends Controller
 {
@@ -36,14 +37,8 @@ class TrainerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|max: 10',
-            'avatar' => 'required|image',
-            'slug' => 'required'
-        ]);
-        
+    public function store(StoreTrainerRequest $request)
+    {   
         $trainer = new Trainer();
 
         if($request->hasFile('avatar')){
