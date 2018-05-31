@@ -8,5 +8,9 @@
 		<h5 class="card-title">{{$trainer->name}}</h5>
 		<p>Some quick example text to build on the card title and make up the bulk of the card's content Some quick example text to build on the card title and make up the bulk of the card's content Some quick example text to build on the card title and make up the bulk of the card's content Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 		<a href="/trainers/{{$trainer->slug}}/edit" class="btn btn-primary">Editar</a>
+
+		{!! Form::open([ 'route' => ['trainers.destroy', $trainer->slug], 'method' => 'DELETE']) !!}
+			{!! Form::submit('Eliminar', ['class' => 'btn btn-danger']) !!}
+		{!! Form::close() !!}
 	</div>
 @endsection
